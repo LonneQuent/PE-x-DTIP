@@ -16,7 +16,7 @@ data = pd.DataFrame({
 st.title('Google Reviews en France')
 
 # Affichage du dataframe
-st.subheader('Données de notation')
+st.subheader('Données de notations')
 st.write(data)
 
 # Répartition des notes
