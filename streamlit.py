@@ -5,7 +5,7 @@ import folium
 from streamlit_folium import folium_static
 
 # Exemple de dataframe avec des données en France
-data = pd.read_csv('https://github.com/LonneQuent/PE-x-DTIP/blob/main/commentairesF.csv')
+data = pd.read_csv('commentairesF.csv')
 
 # Titre de l'application
 st.title('Google Reviews en France')
