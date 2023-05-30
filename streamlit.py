@@ -12,7 +12,7 @@ uploaded_file = 'https://github.com/LonneQuent/PE-x-DTIP/blob/main/commentairesF
 
 # Vérification si un fichier a été téléchargé
 if uploaded_file is not None:
-    data = pd.read_csv(uploaded_file, encoding='utf-8')
+    data = pd.read_csv(uploaded_file)
     
     # Affichage du dataframe
     st.subheader('Données de notation')
