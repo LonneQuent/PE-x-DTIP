@@ -26,4 +26,9 @@ Pas de formulaire
 Pas de démarche active auprès des usagers
 
 
+<p align="center">
+    <img src="image/schemaarchi.png" height="128">
+    <h1 style="border-bottom:none;font-size:60px;margin-bottom:0;" align="center" >Schéma Archi</h1>
+</p>
+
 [lien vers le streamlit](https://lonnequent-pe-x-dtip-streamlit-eagk6f.streamlit.app/)
