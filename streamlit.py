@@ -7,7 +7,8 @@ from streamlit_folium import folium_static
 st.title('Google Reviews en France')
 
 # Téléchargement du fichier
-uploaded_file = st.file_uploader("Télécharger le fichier CSV", type="csv")
+#uploaded_file = st.file_uploader("Télécharger le fichier CSV", type="csv")
+uploaded_file = 'https://github.com/LonneQuent/PE-x-DTIP/blob/main/commentairesF.csv'
 
 # Vérification si un fichier a été téléchargé
 if uploaded_file is not None:
