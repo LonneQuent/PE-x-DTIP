@@ -48,9 +48,11 @@ Une fois l'algorythme de scrapping finis il nous sort un csv avec comme entête 
 
 Ce fichier on va s'en servir pour deux choses:
 
-    -la première est pour la partir NLP. Le but est, à partir de ces commentaires, de pouvoir en tirer des topics afin de pouvoir prendre des mesures en fonction du commentaires poster.
+    -la première est pour la partir NLP. Le but est, à partir de ces commentaires, de pouvoir 
+    en tirer des topics afin de pouvoir prendre des mesures en fonction du commentaires poster.
 
-    -la seconde est de pouvoir utiliser les notes et leurs localisations afin de pouvoir voir la répartition des notes.
+    -la seconde est de pouvoir utiliser les notes et leurs localisations afin de pouvoir
+    voir la répartition des notes.
 
 Afin de réaliser un streamlit à partir de nos résultat de scrapping on aura déjà un pré traitement de la donnée. L'idée de ce pré traitement est à partir d'un [data set](https://simplemaps.com/data/fr-cities) qui contient les latitude et longitude des villes de faire une carte qui regroupe les avis par ville.
 
