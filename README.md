@@ -27,7 +27,7 @@ Pas de démarche active auprès des usagers
 
 
 <p align="center">
-    <img src="image/schemaarchi.png" height="128">
+    <img src="image/schemaarchi.png" height="1028">
     <h1 style="border-bottom:none;font-size:60px;margin-bottom:0;" align="center" >Schéma Archi</h1>
 </p>
 
