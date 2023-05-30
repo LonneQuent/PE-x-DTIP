@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 import re
+from unidecode import unidecode
 
 class GoogleMaps:
     def __init__(self):
@@ -36,10 +37,48 @@ class GoogleMaps:
             newest = self.driver.find_element(By.XPATH, '//*[@id="action-menu"]/div[2]')
             newest.click()
             time.sleep(5)
+            x = len(self.driver.find_elements(By.XPATH, '//*[@class="jJc9Ad "]'))
+            while True:
+                self.driver.find_element(By.XPATH, '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[3]').send_keys(Keys.END)
+                time.sleep(4)
+                new_nb = len(self.driver.find_elements(By.XPATH, '//*[@class="jJc9Ad "]'))
+                if new_nb == x:
+                    break
+                x = new_nb
+
             self.search_success = True
         except NoSuchElementException:
-            # L'élément n'a pas été trouvé, la recherche a échoué
-            self.search_success = False
+            #si l'adresse marche pas on prends la première adresse de la liste de suggestion
+            try:
+                first = self.driver.find_element(By.XPATH, '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[1]/div[3]/div/a')
+                first.click()
+                time.sleep(10)
+                button = self.driver.find_element(By.XPATH, '//*[@id="QA0Szd"]/div/div/div[1]/div[3]/div/div[1]/div/div/div[2]/div[3]/div/div/button[2]/div[2]/div[2]')
+                button.click()
+                time.sleep(5)
+                trier = self.driver.find_element(By.XPATH, '//*[@id="QA0Szd"]/div/div/div[1]/div[3]/div/div[1]/div/div/div[3]/div[8]/div[2]/button')
+                trier.click()
+                time.sleep(5)
+                newest = self.driver.find_element(By.XPATH, '//*[@id="action-menu"]/div[2]')
+                newest.click()
+                time.sleep(5)
+                x = len(self.driver.find_elements(By.XPATH, '//*[@class="jJc9Ad "]'))
+                # Appuyer de la touche "End" pour pouvoir scroller la page
+                try:
+                    while True:
+                        self.driver.find_element(By.XPATH, '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[3]').send_keys(Keys.END)
+                        time.sleep(4)
+                        new_nb = len(self.driver.find_elements(By.XPATH, '//*[@class="jJc9Ad "]'))
+                        if new_nb == x:
+                            break
+                        x = new_nb
+                except:
+                    pass
+                self.search_success = True
+
+            except NoSuchElementException:
+                # L'élément n'a pas été trouvé, la recherche a échoué
+                self.search_success = False
 
     def get_rating(self, review):
         star_elements = review.find_all('img', {'class': 'hCCjke vzX5Ic'})
@@ -80,10 +119,8 @@ class GoogleMaps:
             reviews.append([index + 1, location, author, date, rating, comment])  # Ajout de l'index dans la liste des avis
             print(author)
 
-            # Écrire l'avis dans le fichier CSV au fur et à mesure
-            df = pd.DataFrame(reviews, columns=['Index', 'Adresse', 'Auteur', 'Date', 'Note', 'Commentaire'])
-            df.to_csv(output_file, index=False)
-
+                
+            
     def close(self):
         # Fermer le navigateur
         self.driver.quit()
@@ -93,6 +130,7 @@ def clean_comment(comment):
     # Nettoyer le commentaire en supprimant les retours à la ligne, la ponctuation, les accents, etc.
     comment = re.sub(r'\n', ' ', comment)  # Supprimer les retours à la ligne
     comment = re.sub(r'[^\w\s]', ' ', comment)  # Supprimer la ponctuation
+    comment = unidecode(comment)  # Transformer les accents en leur version sans accent
     comment = re.sub(r'[^\x00-\x7F]+', ' ', comment)  # Supprimer les caractères non ASCII
     return comment
 
@@ -104,14 +142,15 @@ reviews = []
 no_match = []
 
 # Lire le fichier Excel
-GN = pd.read_excel('./gendarmerie_nationale.xlsx')
+#GN = pd.read_excel('./gendarmerie_nationale.xlsx')
+DGFIP = pd.read_csv ('./sip.csv')
 
 # Chemin du fichier CSV de sortie
 output_file = 'commentaires.csv'
 no_match_file = 'no_match.csv'
 
 # Itérer sur chaque ligne du DataFrame
-for index, row in GN.iterrows():
+for index, row in DGFIP.iterrows():
     # Créer une nouvelle instance de GoogleMaps pour chaque ligne
     maps = GoogleMaps()
 
@@ -130,11 +169,20 @@ for index, row in GN.iterrows():
 
     maps.get_reviews(location, reviews, output_file)
 
+
+    # Écrire l'avis dans le fichier CSV au fur et à mesure
+    df = pd.DataFrame(reviews, columns=['Index', 'Adresse', 'Auteur', 'Date', 'Note', 'Commentaire'])
+    df.to_csv(output_file, index=False)
+
+    # Stocker les "no match" dans un fichier CSV
+    df_no_match = pd.DataFrame(no_match, columns=['Erreur', 'Adresse'])
+    df_no_match.to_csv(no_match_file, index=False)
+
+
     # Fermer le navigateur pour cette instance
     maps.close()
 
-# Créer un DataFrame Pandas pour les "no match"
-df_no_match = pd.DataFrame(no_match, columns=['Erreur', 'Adresse'])
 
-# Stocker les "no match" dans un fichier CSV
-df_no_match.to_csv(no_match_file, index=False)
+
+
+
