@@ -50,9 +50,16 @@ if uploaded_file is not None:
     folium_static(m)
     
     selected_city = st.selectbox('Sélectionnez une ville', sorted_cities)
+
+    sorted_date = data['Date'].sort_values().unique()
+    selected_date = st.selectbox('Sélectionnez une date', sorted_date)
+
+    filtered_data = data[data['Date'] == selected_date]
+
     
     # Filtrer les commentaires vides pour la ville sélectionnée
-    selected_comments = data[data['Ville'] == selected_city]['Commentaire'].dropna()
+    selected_comments = filtered_data[filtered_data['Ville'] == selected_city]['Commentaire'].dropna()
+
     
     # Vérifier s'il y a des commentaires à afficher
     if not selected_comments.empty:
