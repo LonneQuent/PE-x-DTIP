@@ -12,16 +12,16 @@ uploaded_file = st.file_uploader("Télécharger le fichier CSV", type="csv")
 
 # Vérification si un fichier a été téléchargé
 if uploaded_file is not None:
-    # Lecture du fichier CSV
-    data = pd.read_csv(uploaded_file)
+    # Lecture du fichier CSV en spécifiant l'encodage
+    data = pd.read_csv(uploaded_file, encoding='utf-8')
+    
+    # Reste du code à exécuter après avoir lu le fichier CSV
+    # ...
     
     # Affichage du dataframe
     st.subheader('Données de notation')
     st.write(data)
     
-    # Reste du code à exécuter après avoir lu le fichier CSV
-    # ...
-
     # Répartition des notes
     st.subheader('Répartition des notes')
     st.bar_chart(data['Note'].value_counts())
