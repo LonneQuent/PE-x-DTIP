@@ -27,8 +27,7 @@ Pas de démarche active auprès des usagers
 
 
 <p align="center">
-    <h1 style="border-bottom:none;font-size:60px;margin-bottom:0;" align="center" >Schéma d'Architecture</h1>
-    <img src="image/schemaarchi.png" height="1028">
+    <img src="image/schemaarchi.png" height="1028" align="center">
 </p>
 
 Afin de réaliser toutes ces étapes on a crée différents algo.
