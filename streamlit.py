@@ -67,4 +67,4 @@ if uploaded_file is not None:
         st.subheader(f"Commentaires pour {selected_city} le {selected_date}")
         st.write(selected_comments)
     else:
-        st.subheader(f"Aucun commentaire disponible pour {selected_city} le {selected_date}")
+        st.subheader(f"Aucun commentaire disponible pour {selected_city} {selected_date}")
