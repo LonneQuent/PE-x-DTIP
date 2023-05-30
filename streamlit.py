@@ -12,11 +12,7 @@ uploaded_file = st.file_uploader("Télécharger le fichier CSV", type="csv")
 
 # Vérification si un fichier a été téléchargé
 if uploaded_file is not None:
-    # Lecture du fichier CSV en spécifiant l'encodage
     data = pd.read_csv(uploaded_file, encoding='utf-8')
-    
-    # Reste du code à exécuter après avoir lu le fichier CSV
-    # ...
     
     # Affichage du dataframe
     st.subheader('Données de notation')
@@ -26,19 +22,17 @@ if uploaded_file is not None:
     st.subheader('Répartition des notes')
     st.bar_chart(data['Note'].value_counts())
     
-    # Supprimer les lignes avec des valeurs NaN dans les colonnes 'lat' et 'lng'
+    # Supprimer les lignes avec des valeurs NaN dans les colonnes 'lat' et 'lng' parce que sinon planté
     data = data.dropna(subset=['lat', 'lng'])
     
     # Calculer la moyenne des notes par ville
     average_ratings = data.groupby('Ville')['Note'].mean().reset_index()
-    
-    # Trier les villes par ordre alphabétique
     sorted_cities = data['Ville'].sort_values().unique()
     
     # Création de la carte centrée sur la France
     m = folium.Map(location=[46.603354, 1.888334], zoom_start=6)
     
-    # Ajout des marqueurs pour chaque ville avec la moyenne des notes dans le popup
+    # Ajout des marqueurs pour chaque ville avec la moyenne des notes dans le pop-up
     for index, row in data.iterrows():
         ville = row['Ville']
         lat = row['lat']
@@ -55,7 +49,6 @@ if uploaded_file is not None:
     st.subheader('Note moyenne par ville')
     folium_static(m)
     
-    # Sélection de la ville
     selected_city = st.selectbox('Sélectionnez une ville', sorted_cities)
     
     # Filtrer les commentaires vides pour la ville sélectionnée
