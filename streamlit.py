@@ -38,10 +38,15 @@ if uploaded_file is not None:
         lng = row['lng']
         note = average_ratings.loc[average_ratings['Ville'] == ville, 'Note'].values[0]
         
+        if note >= 2.5:
+            color = 'green'
+        else:
+            color = 'red'
+        
         folium.Marker(
             location=[lat, lng],
             popup=f"{ville}: {note:.2f}",
-            icon=folium.Icon(color='blue')
+            icon=folium.Icon(color=color)
         ).add_to(m)
     
     # Affichage de la carte
