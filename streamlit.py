@@ -49,12 +49,6 @@ if uploaded_file is not None:
             color = 'lightgreen'
         elif note >= 4.50 and note <= 5.00:
             color = 'green'
-
-
-        if note >= 2.5:
-            color = 'green'
-        else:
-            color = 'red'
         
         folium.Marker(
             location=[lat, lng],
