@@ -75,6 +75,22 @@ if uploaded_file is not None:
     # Affichage du graphe
     st.plotly_chart(fig)
     
+    # Graphe d'évolution du nombre d'avis négatifs
+    # Filtrer les avis négatifs
+    negative_reviews = data[data['Note_x'] <= 3]
+
+    # Compter le nombre d'avis négatifs par date
+    negative_reviews_count = negative_reviews['Date_x'].value_counts().sort_index()
+
+    # Créer le graphe d'évolution du nombre d'avis négatifs
+    fig_negative_reviews = go.Figure(data=go.Scatter(x=negative_reviews_count.index, y=negative_reviews_count.values))
+    fig_negative_reviews.update_layout(title="Évolution du nombre d'avis négatifs",
+                                       xaxis_title="Date",
+                                       yaxis_title="Nombre d'avis négatifs")
+    
+    # Affichage du graphe d'évolution du nombre d'avis négatifs
+    st.plotly_chart(fig_negative_reviews)
+    
     # Calculer la moyenne des notes par ville
     average_ratings = data.groupby('Ville')['Note_x'].mean().reset_index()
     sorted_cities = data['Ville'].sort_values().unique()
@@ -139,7 +155,6 @@ if uploaded_file is not None:
     negative_reviews = data[data['Note_x'] <= 3]
     negative_wordcloud = WordCloud().generate(' '.join(negative_reviews['desc_clean'].dropna()))
 
-    
     # Afficher le nuage de mots des termes les plus fréquents dans les avis négatifs
     st.subheader("Nuage de mots des termes les plus fréquents dans les avis négatifs")
     plt.imshow(negative_wordcloud, interpolation='bilinear')
