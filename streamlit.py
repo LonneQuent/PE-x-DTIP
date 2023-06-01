@@ -48,7 +48,7 @@ if uploaded_file is not None:
     st.subheader('Répartition des notes par période')
     
     # Obtenir les différentes valeurs de la colonne 'Date_x'
-    date_values = data['Date_x'].unique()
+    date_values = sorted(data['Date_x'].unique())
     
     # Créer le graphe de répartition des notes par période
     ratings_by_date = data.groupby('Date_x')['Note_x'].value_counts().unstack().fillna(0)
@@ -64,16 +64,15 @@ if uploaded_file is not None:
     
     # Ajout des marqueurs pour chaque ville avec la moyenne des notes dans le pop-up
     for index, row in data.iterrows():
-        ville = row['Ville']
-        lat = row['lat']
-        lng = row['lng']
-        note = average_ratings.loc[average_ratings['Ville'] == ville, 'Note_x'].values[0]
+        lat, lng, ville, note = row['lat'], row['lng'], row['Ville'], row['Note_x']
         
-        if note < 2 and note < 3:
+        # Définir la couleur du marqueur en fonction de la note
+        color = 'blue'
+        if note >= 1.00 and note < 2.00:
             color = 'red'
-        elif note >= 3.00 and note < 4:
+        elif note >= 2.00 and note < 3.00:
             color = 'orange'
-        elif note >= 4.00 and note <= 5.00:
+        elif note >= 3.00 and note < 4.00:
             color = 'green'
         
         folium.Marker(
