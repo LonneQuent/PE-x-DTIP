@@ -91,5 +91,5 @@ if uploaded_file is not None:
     st.subheader('Répartition des sujets')
     subject_counts = filtered_data['subject_name'].value_counts()
     
-    fig = px.pie(subject_counts, values=subject_counts.values, names=subject_counts.index)
+    fig = px.pie(subject_counts, names=subject_counts.index)
     st.plotly_chart(fig)
