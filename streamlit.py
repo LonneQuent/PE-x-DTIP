@@ -144,6 +144,10 @@ if uploaded_file is not None:
     else:
         st.subheader(f"Aucun commentaire disponible pour {selected_city} {selected_date}")
     
+    # Ajouter la moyenne de la ville sélectionnée sans tenir compte de la date
+    average_rating_selected_city = average_ratings.loc[average_ratings['Ville'] == selected_city, 'Note_x'].values[0]
+    st.subheader(f"Note moyenne de {selected_city} : {average_rating_selected_city:.2f}")
+    
     # Répartition des sujets
     st.subheader('Répartition des sujets')
     subject_counts = data['subject_name'].value_counts()
@@ -161,3 +165,5 @@ if uploaded_file is not None:
     plt.axis('off')
     st.set_option('deprecation.showPyplotGlobalUse', False)
     st.pyplot()
+
+

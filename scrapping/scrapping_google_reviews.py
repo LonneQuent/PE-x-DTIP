@@ -184,7 +184,3 @@ for index, row in DGFIP.iterrows():
     # Fermer le navigateur pour cette instance
     maps.close()
 
-
-
-
-
