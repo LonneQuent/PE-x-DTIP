@@ -92,4 +92,4 @@ if uploaded_file is not None:
     subject_counts = filtered_data['subject_name'].value_counts()
     
     fig = px.pie(subject_counts, values=subject_counts.values, names=subject_counts.index, hole=0.5)
-    st.plotly_chart(fig)
+    fig.show
