@@ -80,7 +80,7 @@ if uploaded_file is not None:
     negative_reviews = data[data['Note_x'] <= 3]
 
     # Compter le nombre d'avis négatifs par date
-    negative_reviews_count = negative_reviews['Date_x'].value_counts().sort_index()
+    negative_reviews_count = negative_reviews['Date_maj'].value_counts().sort_index()
 
     # Créer le graphe d'évolution du nombre d'avis négatifs
     fig_negative_reviews = go.Figure(data=go.Scatter(x=negative_reviews_count.index, y=negative_reviews_count.values))
