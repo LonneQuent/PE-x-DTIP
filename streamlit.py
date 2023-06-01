@@ -28,7 +28,6 @@ if uploaded_file is not None:
     non_empty_comments_percentage = (data['Commentaire_x'].notna().sum() / len(data)) * 100
     st.subheader(f"Pourcentage de commentaires non vides : {non_empty_comments_percentage:.2f}%")
     
-    
     # Supprimer les lignes avec des valeurs NaN dans les colonnes 'lat' et 'lng'
     data = data.dropna(subset=['lat', 'lng'])
     
@@ -37,7 +36,14 @@ if uploaded_file is not None:
     
     # Répartition des notes
     st.subheader('Répartition des notes')
-  
+    
+    # Filtrer les données pour exclure les commentaires vides si l'option est désactivée
+    if not show_empty_comments:
+        data = data.dropna(subset=['Commentaire_x'])
+    
+    # Créer le graphe de répartition des notes
+    st.bar_chart(data['Note_x'].value_counts())
+    
     # Répartition des notes par différentes valeurs de Date_x
     st.subheader('Répartition des notes par période')
     
@@ -48,13 +54,6 @@ if uploaded_file is not None:
     ratings_by_date = data.groupby('Date_x')['Note_x'].value_counts().unstack().fillna(0)
     ratings_by_date = ratings_by_date[date_values]  # Réorganiser les colonnes dans l'ordre des valeurs de Date_x
     st.line_chart(ratings_by_date)
-    
-    # Filtrer les données pour exclure les commentaires vides si l'option est désactivée
-    if not show_empty_comments:
-        data = data.dropna(subset=['Commentaire_x'])
-    
-    # Créer le graphe de répartition des notes
-    st.bar_chart(data['Note_x'].value_counts())
     
     # Calculer la moyenne des notes par ville
     average_ratings = data.groupby('Ville')['Note_x'].mean().reset_index()
@@ -117,13 +116,21 @@ if uploaded_file is not None:
     st.plotly_chart(fig)
     
     # Générer le nuage de mots pour les avis négatifs
-    negative_reviews = data[data['Note_x'] <= 3]
+    negative_reviews = data[data['Note_x'] < 3]
     negative_wordcloud = WordCloud().generate(' '.join(negative_reviews['desc_clean'].dropna()))
-
+    
+    # Générer le nuage de mots pour les avis positifs
+    positive_reviews = data[data['Note_x'] >= 3]
+    positive_wordcloud = WordCloud().generate(' '.join(positive_reviews['desc_clean'].dropna()))
     
     # Afficher le nuage de mots des termes les plus fréquents dans les avis négatifs
     st.subheader("Nuage de mots des termes les plus fréquents dans les avis négatifs")
     plt.imshow(negative_wordcloud, interpolation='bilinear')
     plt.axis('off')
-    st.set_option('deprecation.showPyplotGlobalUse', False)
+    st.pyplot()
+    
+    # Afficher le nuage de mots des termes les plus fréquents dans les avis positifs
+    st.subheader("Nuage de mots des termes les plus fréquents dans les avis positifs")
+    plt.imshow(positive_wordcloud, interpolation='bilinear')
+    plt.axis('off')
     st.pyplot()
