@@ -17,12 +17,21 @@ if uploaded_file is not None:
     st.subheader('Données de notation')
     st.write(data)
     
-    # Répartition des notes
-    st.subheader('Répartition des notes')
-    st.bar_chart(data['Note_x'].value_counts())
-    
     # Supprimer les lignes avec des valeurs NaN dans les colonnes 'lat' et 'lng'
     data = data.dropna(subset=['lat', 'lng'])
+    
+    # Option pour afficher les commentaires vides ou non
+    show_empty_comments = st.checkbox("Afficher les commentaires vides")
+    
+    # Répartition des notes
+    st.subheader('Répartition des notes')
+    
+    # Filtrer les données pour exclure les commentaires vides si l'option est désactivée
+    if not show_empty_comments:
+        data = data.dropna(subset=['Commentaire_x'])
+    
+    # Créer le graphe de répartition des notes
+    st.bar_chart(data['Note_x'].value_counts())
     
     # Calculer la moyenne des notes par ville
     average_ratings = data.groupby('Ville')['Note_x'].mean().reset_index()
@@ -38,10 +47,9 @@ if uploaded_file is not None:
         lng = row['lng']
         note = average_ratings.loc[average_ratings['Ville'] == ville, 'Note_x'].values[0]
         
-
-        if note <2 and note<3:
+        if note < 2 and note < 3:
             color = 'red'
-        elif note >= 3.00 and note <4 :
+        elif note >= 3.00 and note < 4:
             color = 'orange'
         elif note >= 4.00 and note <= 5.00:
             color = 'green'
@@ -67,12 +75,18 @@ if uploaded_file is not None:
     # Filtrer les données en fonction de la ville et de la date sélectionnées
     filtered_data = data[(data['Ville'] == selected_city) & (data['Date_x'] == selected_date)]
     
-    # Filtrer les commentaires vides pour la ville sélectionnée
-    selected_comments = filtered_data['Commentaire_x'].dropna()
+    # Filtrer les commentaires vides pour la ville sélectionnée si l'option est désactivée
+    if not show_empty_comments:
+        filtered_data = filtered_data.dropna(subset=['Commentaire_x'])
     
     # Vérifier s'il y a des commentaires à afficher
-    if not selected_comments.empty:
+    if not filtered_data.empty:
         st.subheader(f"Commentaires pour {selected_city} {selected_date}")
-        st.write(selected_comments)
+        st.write(filtered_data['Commentaire_x'])
     else:
         st.subheader(f"Aucun commentaire disponible pour {selected_city} {selected_date}")
+    
+    # Répartition des sujets
+    st.subheader('Répartition des sujets')
+    subject_counts = filtered_data['subject_name'].value_counts()
+    st.pie(subject_counts, labels=subject_counts.index, autopct='%1.1f%%')
