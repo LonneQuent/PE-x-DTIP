@@ -16,17 +16,20 @@ uploaded_file = st.file_uploader("Télécharger le fichier CSV", type="csv")
 if uploaded_file is not None:
     data = pd.read_csv(uploaded_file, encoding='utf-8')
     
-    # Nombre de commentaires différents
+    # Affichage du nombre de commentaires différents
     num_unique_comments = data['Commentaire_x'].nunique()
-    st.subheader(f"Nombre de commentaires différents : {num_unique_comments}")
+    st.subheader('Nombre de commentaires différents')
+    st.write(num_unique_comments)
     
-    # Note moyenne globale
+    # Affichage de la note moyenne globale
     average_rating = data['Note_x'].mean()
-    st.subheader(f"Note moyenne globale : {average_rating:.2f}")
+    st.subheader('Note moyenne globale')
+    st.write(average_rating)
     
-    # Pourcentage de commentaires non vides par rapport au total
-    non_empty_comments_percentage = (data['Commentaire_x'].notna().sum() / len(data)) * 100
-    st.subheader(f"Pourcentage de commentaires non vides : {non_empty_comments_percentage:.2f}%")
+    # Calcul du pourcentage de commentaires non vides par rapport au total
+    non_empty_comments_percentage = (data['Commentaire_x'].count() / len(data)) * 100
+    st.subheader('% de commentaire non vide par rapport au total')
+    st.write(non_empty_comments_percentage)
     
     # Supprimer les lignes avec des valeurs NaN dans les colonnes 'lat' et 'lng'
     data = data.dropna(subset=['lat', 'lng'])
@@ -44,17 +47,13 @@ if uploaded_file is not None:
     # Créer le graphe de répartition des notes
     st.bar_chart(data['Note_x'].value_counts())
     
-    # Répartition des notes par différentes valeurs de Date_x
+    # Répartition des notes par période
     st.subheader('Répartition des notes par période')
-    
-    # Obtenir les différentes valeurs de la colonne 'Date_x'
-    date_values = sorted(data['Date_x'].unique())
-    
-    # Créer le graphe de répartition des notes par période
-    ratings_by_date = data.groupby('Date_x')['Note_x'].value_counts().unstack().fillna(0)
-    ratings_by_date = ratings_by_date[date_values]  # Réorganiser les colonnes dans l'ordre des valeurs de Date_x
-    st.line_chart(ratings_by_date)
-    
+    ratings_by_date = data['Note_x'].value_counts().sort_index()
+
+    fig2 = px.bar(ratings_by_date, x=ratings_by_date.index, y=ratings_by_date.values, labels={'x': 'Note', 'y': 'Nombre de commentaires'})
+    st.plotly_chart(fig2)
+
     # Calculer la moyenne des notes par ville
     average_ratings = data.groupby('Ville')['Note_x'].mean().reset_index()
     sorted_cities = data['Ville'].sort_values().unique()
@@ -64,15 +63,16 @@ if uploaded_file is not None:
     
     # Ajout des marqueurs pour chaque ville avec la moyenne des notes dans le pop-up
     for index, row in data.iterrows():
-        lat, lng, ville, note = row['lat'], row['lng'], row['Ville'], row['Note_x']
+        ville = row['Ville']
+        lat = row['lat']
+        lng = row['lng']
+        note = average_ratings.loc[average_ratings['Ville'] == ville, 'Note_x'].values[0]
         
-        # Définir la couleur du marqueur en fonction de la note
-        color = 'blue'
-        if note >= 1.00 and note < 2.00:
+        if note < 2 and note < 3:
             color = 'red'
-        elif note >= 2.00 and note < 3.00:
+        elif note >= 3.00 and note < 4:
             color = 'orange'
-        elif note >= 3.00 and note < 4.00:
+        elif note >= 4.00 and note <= 5.00:
             color = 'green'
         
         folium.Marker(
