@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import folium
-from streamlit_folium import folium_static
+import plotly.express as px
 
 # Titre de l'application
 st.title('Google Reviews en France')
@@ -89,4 +89,6 @@ if uploaded_file is not None:
     # Répartition des sujets
     st.subheader('Répartition des sujets')
     subject_counts = filtered_data['subject_name'].value_counts()
-    st.pie(subject_counts, labels=subject_counts.index, autopct='%1.1f%%')
+    
+    fig = px.pie(subject_counts, values=subject_counts.values, names=subject_counts.index, hole=0.5)
+    st.plotly_chart(fig)
