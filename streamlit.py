@@ -38,6 +38,19 @@ if uploaded_file is not None:
         lng = row['lng']
         note = average_ratings.loc[average_ratings['Ville'] == ville, 'Note'].values[0]
         
+
+        if note <2:
+            color = 'red'
+        elif note >= 2.00 and note <3 :
+            color = 'lightred'
+        elif note >= 3.00 and note <4 :
+            color = 'orange'
+        elif note >= 4.00 and note <4.50:
+            color = 'lightgreen'
+        elif note <= 5.00:
+            color = 'green'
+
+
         if note >= 2.5:
             color = 'green'
         else:
