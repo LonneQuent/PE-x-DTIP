@@ -11,7 +11,7 @@ uploaded_file = st.file_uploader("Télécharger le fichier CSV", type="csv")
 
 # Vérification si un fichier a été téléchargé
 if uploaded_file is not None:
-    data = pd.read_csv(uploaded_file, encoding='utf-8', delimiter=';')
+    data = pd.read_csv(uploaded_file, encoding='utf-8')
     
     # Affichage du dataframe
     st.subheader('Données de notation')
