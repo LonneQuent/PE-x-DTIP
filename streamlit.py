@@ -98,20 +98,18 @@ if uploaded_file is not None:
     
     # Générer le nuage de mots pour les avis négatifs
     negative_reviews = data[data['Note_x'] < 3]
-    negative_wordcloud = WordCloud().generate(' '.join(negative_reviews['desc'].dropna()))
+    negative_wordcloud = WordCloud().generate(' '.join(negative_reviews['desc_clean'].dropna()))
     
     # Générer le nuage de mots pour les avis positifs
     positive_reviews = data[data['Note_x'] >= 3]
-    positive_wordcloud = WordCloud().generate(' '.join(positive_reviews['desc'].dropna()))
+    positive_wordcloud = WordCloud().generate(' '.join(positive_reviews['desc_clean'].dropna()))
     
     # Afficher le nuage de mots des termes les plus fréquents dans les avis négatifs
     st.subheader("Nuage de mots des termes les plus fréquents dans les avis négatifs")
     plt.imshow(negative_wordcloud, interpolation='bilinear')
     plt.axis('off')
-    st.pyplot()
     
     # Afficher le nuage de mots des termes les plus fréquents dans les avis positifs
     st.subheader("Nuage de mots des termes les plus fréquents dans les avis positifs")
     plt.imshow(positive_wordcloud, interpolation='bilinear')
     plt.axis('off')
-    st.pyplot()
