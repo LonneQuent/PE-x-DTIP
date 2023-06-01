@@ -4,3 +4,4 @@ pandas==2.0.1
 folium==0.14.0
 numpy==1.24.3
 plotly
+wordcloud

@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import folium
 import plotly.express as px
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 from streamlit_folium import folium_static
 
 # Titre de l'application
@@ -89,7 +91,27 @@ if uploaded_file is not None:
     
     # Répartition des sujets
     st.subheader('Répartition des sujets')
-    subject_counts = data['subject_name'].value_counts()
+    subject_counts = filtered_data['subject_name'].value_counts()
     
     fig = px.pie(subject_counts, values=subject_counts.values, names=subject_counts.index)
     st.plotly_chart(fig)
+    
+    # Générer le nuage de mots pour les avis négatifs
+    negative_reviews = data[data['Note_x'] < 3]
+    negative_wordcloud = WordCloud().generate(' '.join(negative_reviews['Commentaire_x'].dropna()))
+    
+    # Générer le nuage de mots pour les avis positifs
+    positive_reviews = data[data['Note_x'] >= 3]
+    positive_wordcloud = WordCloud().generate(' '.join(positive_reviews['Commentaire_x'].dropna()))
+    
+    # Afficher le nuage de mots des termes les plus fréquents dans les avis négatifs
+    st.subheader("Nuage de mots des termes les plus fréquents dans les avis négatifs")
+    plt.imshow(negative_wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    st.pyplot()
+    
+    # Afficher le nuage de mots des termes les plus fréquents dans les avis positifs
+    st.subheader("Nuage de mots des termes les plus fréquents dans les avis positifs")
+    plt.imshow(positive_wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    st.pyplot()
