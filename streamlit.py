@@ -16,9 +16,18 @@ uploaded_file = st.file_uploader("Télécharger le fichier CSV", type="csv")
 if uploaded_file is not None:
     data = pd.read_csv(uploaded_file, encoding='utf-8')
     
-    # Affichage du dataframe
-    st.subheader('Données de notation')
-    st.write(data)
+    # Nombre de commentaires différents
+    num_unique_comments = data['Commentaire_x'].nunique()
+    st.subheader(f"Nombre de commentaires différents : {num_unique_comments}")
+    
+    # Note moyenne globale
+    average_rating = data['Note_x'].mean()
+    st.subheader(f"Note moyenne globale : {average_rating:.2f}")
+    
+    # Pourcentage de commentaires non vides par rapport au total
+    non_empty_comments_percentage = (data['Commentaire_x'].notna().sum() / len(data)) * 100
+    st.subheader(f"Pourcentage de commentaires non vides : {non_empty_comments_percentage:.2f}%")
+    
     
     # Supprimer les lignes avec des valeurs NaN dans les colonnes 'lat' et 'lng'
     data = data.dropna(subset=['lat', 'lng'])
