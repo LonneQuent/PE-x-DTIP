@@ -58,7 +58,7 @@ if uploaded_file is not None:
     data['Date_x'] = data['Date_x'].apply(parse_date)
 
     # Sélection de la période
-    start_date = st.date_input("Date de début")
+    start_date = st.date_input("Date de début", value=pd.to_datetime("2022-06-02").date())
     end_date = st.date_input("Date de fin")
 
     # Filtrez les données en fonction de la période sélectionnée
