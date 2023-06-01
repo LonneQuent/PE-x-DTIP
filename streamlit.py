@@ -55,18 +55,18 @@ if uploaded_file is not None:
         return parsed_date.date()
 
     # Convertissez les expressions de date en objets de date
-    data['Date_x'] = data['Date_x'].apply(parse_date)
+    data['Date_maj'] = data['Date_x'].apply(parse_date)
 
     # Sélection de la période
     start_date = st.date_input("Date de début", value=pd.to_datetime("2022-06-02").date())
     end_date = st.date_input("Date de fin")
 
     # Filtrez les données en fonction de la période sélectionnée
-    filtered_data = data[(data['Date_x'] >= start_date) & (data['Date_x'] <= end_date)]
+    filtered_data = data[(data['Date_maj'] >= start_date) & (data['Date_maj'] <= end_date)]
 
     # Créer le graphe de répartition des notes en fonction de la période
-    fig = go.Figure(data=[go.Bar(x=filtered_data['Date_x'].value_counts().index,
-                                y=filtered_data['Date_x'].value_counts().values)])
+    fig = go.Figure(data=[go.Bar(x=filtered_data['Date_maj'].value_counts().index,
+                                y=filtered_data['Date_maj'].value_counts().values)])
 
     fig.update_layout(title="Nombre de notes en fonction de la période",
                       xaxis_title="Période",
