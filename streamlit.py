@@ -92,9 +92,4 @@ if uploaded_file is not None:
     subject_counts = filtered_data['subject_name'].value_counts()
     
     fig = px.pie(subject_counts, values=subject_counts.values, names=subject_counts.index)
-    
-    # Conversion du graphique Plotly en HTML
-    fig_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
-    
-    # Affichage du graphique Plotly dans Streamlit
-    st.write(fig_html, unsafe_allow_html=True)
+    st.plotly_chart(fig)
