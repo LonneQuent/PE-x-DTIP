@@ -5,6 +5,8 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from streamlit_folium import folium_static
+import plotly.graph_objects as go
+import dateparser
 
 # Titre de l'application
 st.title('Google Reviews en France')
@@ -43,6 +45,35 @@ if uploaded_file is not None:
     
     # Créer le graphe de répartition des notes
     st.bar_chart(data['Note_x'].value_counts())
+    
+    # Créer le graphe de répartition des notes en fonction de la période
+    st.subheader("Répartition des notes en fonction de la période")
+    
+    # Ajoutez la fonction de conversion des expressions de date en objets de date Python
+    def parse_date(date_string):
+        parsed_date = dateparser.parse(date_string)
+        return parsed_date.date()
+
+    # Convertissez les expressions de date en objets de date
+    data['Date_x'] = data['Date_x'].apply(parse_date)
+
+    # Sélection de la période
+    start_date = st.date_input("Date de début")
+    end_date = st.date_input("Date de fin")
+
+    # Filtrez les données en fonction de la période sélectionnée
+    filtered_data = data[(data['Date_x'] >= start_date) & (data['Date_x'] <= end_date)]
+
+    # Créer le graphe de répartition des notes en fonction de la période
+    fig = go.Figure(data=[go.Bar(x=filtered_data['Date_x'].value_counts().index,
+                                y=filtered_data['Date_x'].value_counts().values)])
+
+    fig.update_layout(title="Nombre de notes en fonction de la période",
+                      xaxis_title="Période",
+                      yaxis_title="Nombre de notes")
+
+    # Affichage du graphe
+    st.plotly_chart(fig)
     
     # Calculer la moyenne des notes par ville
     average_ratings = data.groupby('Ville')['Note_x'].mean().reset_index()
