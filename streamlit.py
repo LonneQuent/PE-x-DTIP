@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import folium
 import plotly.express as px
-from streamlit_folium import folium_static
 
 # Titre de l'application
 st.title('Google Reviews en France')
@@ -90,9 +89,11 @@ if uploaded_file is not None:
     # Répartition des sujets
     st.subheader('Répartition des sujets')
     subject_counts = filtered_data['subject_name'].value_counts()
-
-    chart_height = 400
-    chart_width = 600
     
-    fig = px.pie(subject_counts, values=subject_counts.values, names=subject_counts.index, height=chart_height, width=chart_width)
-    st.plotly_chart(fig)
+    fig = px.pie(subject_counts, values=subject_counts.values, names=subject_counts.index, hole=0.5)
+    
+    # Conversion du graphique Plotly en HTML
+    fig_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
+    
+    # Affichage du graphique Plotly dans Streamlit
+    st.write(fig_html, unsafe_allow_html=True)
