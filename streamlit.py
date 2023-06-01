@@ -106,12 +106,12 @@ if uploaded_file is not None:
     
     # Afficher le nuage de mots des termes les plus fréquents dans les avis négatifs
     st.subheader("Nuage de mots des termes les plus fréquents dans les avis négatifs")
-    fig1=plt.imshow(negative_wordcloud, interpolation='bilinear')
+    plt.imshow(negative_wordcloud, interpolation='bilinear')
     plt.axis('off')
     st.pyplot(fig1)
     
     # Afficher le nuage de mots des termes les plus fréquents dans les avis positifs
     st.subheader("Nuage de mots des termes les plus fréquents dans les avis positifs")
-    fig2=plt.imshow(positive_wordcloud, interpolation='bilinear')
+    plt.imshow(positive_wordcloud, interpolation='bilinear')
     plt.axis('off')
     st.pyplot(fig2)
