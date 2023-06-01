@@ -37,6 +37,19 @@ if uploaded_file is not None:
     
     # Répartition des notes
     st.subheader('Répartition des notes')
+
+    # Répartition des notes par période de Date_x
+    st.subheader('Répartition des notes par période')
+    
+    # Convertir la colonne 'Date_x' en format datetime
+    data['Date_x'] = pd.to_datetime(data['Date_x'])
+    
+    # Ajouter une colonne 'Mois' pour regrouper par mois
+    data['Mois'] = data['Date_x'].dt.to_period('M')
+    
+    # Créer le graphe de répartition des notes par période
+    ratings_by_period = data.groupby('Mois')['Note_x'].value_counts().unstack().fillna(0)
+    st.line_chart(ratings_by_period)
     
     # Filtrer les données pour exclure les commentaires vides si l'option est désactivée
     if not show_empty_comments:
