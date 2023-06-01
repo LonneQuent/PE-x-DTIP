@@ -91,7 +91,7 @@ if uploaded_file is not None:
     st.subheader('Répartition des sujets')
     subject_counts = filtered_data['subject_name'].value_counts()
     
-    fig = px.pie(subject_counts, values=subject_counts.values, names=subject_counts.index, hole=0.5)
+    fig = px.pie(subject_counts, values=subject_counts.values, names=subject_counts.index)
     
     # Conversion du graphique Plotly en HTML
     fig_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
