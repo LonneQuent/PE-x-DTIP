@@ -47,7 +47,7 @@ if uploaded_file is not None:
             color = 'orange'
         elif note >= 4.00 and note <4.50:
             color = 'lightgreen'
-        elif note <= 5.00:
+        elif note >= 4.50 and note <= 5.00:
             color = 'green'
 
 
