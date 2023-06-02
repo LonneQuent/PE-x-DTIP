@@ -3,6 +3,16 @@ streamlit-folium==0.11.1
 pandas==2.0.1
 folium==0.14.0
 numpy==1.24.3
+jupyter
+transformers
+scikit-learn
+matplotlib
+nltk
+spacy
+unidecode
+gensim
+bertopic
+top2vec
 plotly
 wordcloud
 matplotlib
