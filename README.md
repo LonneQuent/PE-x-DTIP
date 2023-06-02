@@ -51,7 +51,7 @@ Nous allons exploiter ce fichier pour deux objectifs:
    Son procédé suit le schéma suivant : 
 
 <p align="center">
-   <img src="image/NLPv2.png" height="800">
+   <img src="image/NLPv2.pNG" height="800">
 </p>
 
 Un modèle KNN est disponible pour prédire les canaux de communication des usagers parmi les trois majoritaires mais il n'a pas été utlisé pour le topic modeling (à affiner) 
