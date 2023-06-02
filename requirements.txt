@@ -13,3 +13,7 @@ unidecode
 gensim
 bertopic
 top2vec
+plotly
+wordcloud
+matplotlib
+dateparser
