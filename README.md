@@ -47,11 +47,16 @@ Notre algorithme de scraping génère un fichier.csv suivant le format suivant:
 
 Nous allons exploiter ce fichier pour deux objectifs:
 
-    -la première est pour la partir NLP. Le but est, à partir de ces commentaires, de pouvoir 
-    en tirer des topics afin de pouvoir prendre des mesures en fonction du commentaires poster.
+   -la première est pour la partir NLP. Le but est d'extraire des topics à partir des commentaires afin d'établir un diagnostic des dysfonctionnements des services publics.
+   Son procédé suit le schéma suivant : 
 
-    -la seconde est de pouvoir utiliser les notes et leurs localisations afin de pouvoir
-    voir la répartition des notes.
+<p align="center">
+   <img src="image/NLP.png" height="800">
+</p>
+
+Un modèle KNN est disponible pour prédire les canaux de communication des usagers parmi les trois majoritaires mais il n'a pas été utlisé pour le topic modeling (à affiner) 
+
+  -la deuxième pour dresser une répartition des notes des services publics sur tout le territoire (principalement la métropole) avec prise en compte des messages vides ou non.
 
 Afin de réaliser un streamlit à partir de nos résultats de scrapping nous devons fournir une donnée lisible. L'idée de ce pré traitement est à partir d'un [data set](https://simplemaps.com/data/fr-cities) qui contient les latitude et longitude des villes de faire une carte qui regroupe les avis par ville.
 
